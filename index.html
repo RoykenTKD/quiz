@@ -131,9 +131,9 @@ add("Stillinger","Seks grunnprinsipper for korrekt stilling (Gen. Choi)?","1. Re
 // Klarstillinger
 add("Klarstillinger","Narani junbi sogi – armer?","Foran magen. 5 cm mellom hendene, 7 cm fra magen. Armene 30° fremover og bøyd 40° oppover.");C.at(-1).lv=10;
 add("Klarstillinger","Annun / Gunnun / Niunja junbi sogi – armer?","Ut til siden, 30 cm fra hofta, albuene bøyd 30°.");C.at(-1).lv=9;
-add("Klarstillinger","Moa junbi sogi A?","Hendene 30 cm fra ansiktet. (Won-Hyo)");C.at(-1).lv=6;
-add("Klarstillinger","Moa junbi sogi B?","Hendene 15 cm fra kroppen. (Joong-Gun, Toi-Gye)");C.at(-1).lv=4;
-add("Klarstillinger","Moa junbi sogi C?","Hendene 10 cm ut fra kroppen, venstre langfinger oppå høyre. (Hwa-Rang)");C.at(-1).lv=2;
+add("Klarstillinger","Moa junbi sogi A?","Hendene 30 cm fra ansiktet.","Brukes i Won-Hyo");C.at(-1).lv=6;
+add("Klarstillinger","Moa junbi sogi B?","Hendene 15 cm fra kroppen.","Brukes i Joong-Gun og Toi-Gye");C.at(-1).lv=4;
+add("Klarstillinger","Moa junbi sogi C?","Hendene 10 cm ut fra kroppen, venstre langfinger oppå høyre.","Brukes i Hwa-Rang");C.at(-1).lv=2;
 add("Klarstillinger","Hvilken klarstilling starter Kwang-Gae og Po-Eun?","Narani so hanul son (parallell stilling med himmelhånd)");
 
 // TEKNIKKER: [kat, norsk, koreansk, detaljer]
@@ -374,6 +374,96 @@ add("Etikk og organisasjon","Hvorfor finnes det to stilarter TKD?","ITF (Gen. Ch
 add("Etikk og organisasjon","Hovedforskjeller ITF vs. WT?","ITF: mønstre kalt tul, sinusbevegelse, lett-/semikontakt med håndbeskyttere, slag mot hodet tillatt.\nWT: mønstre kalt poomsae, olympisk idrett siden 2000, fullkontakt med vest og elektroniske poeng, mer spark-fokus.","Tillegg – ikke fra dokumentene");
 
 for(const [k,n] of [["Ye Ui","Høflighet"],["Yom Chi","Integritet"],["In Nae","Utholdenhet"],["Guk Gi","Selvkontroll"],["Baekjul Boolgool","Ukuelig ånd"]]) add("Etikk og organisasjon","Grunnprinsipp – koreansk for: "+n,k,"Tillegg – ikke fra dokumentene");
+// Håndskrevne feilalternativer for spørsmål uten naturlige «søsken»
+const KG_NY="Bl.a. pressende spark (noollo chagi), nedoverslag med side-knyttneve, lav frontblokk med knivhånd, høy garderingsblokk m/knivhånd i bakfotstilling, høy bueblokk m/håndflate (double stepping)";
+const PE_NY="Bl.a. ettbensstilling, horisontalt punch, bakoverstøt med albue, horisontalt støt med tvilling albue, pressende blokk med front knyttneve, U-form grabb, spredningsblokk i sittestilling";
+const GB_NY="Bl.a. tvistspark, 9-form blokk, øseblokk, dobbel høy blokk med halvsirkelhånd, midtre knoke-punch, frontslag med baksiden av knyttneven, skip-motion";
+const ED=["1. Jeg skal følge grunnprinsippene i Taekwon-Do","2. Jeg skal respektere instruktøren og de som er høyere gradert","3. Jeg skal aldri misbruke Taekwon-Do","4. Jeg skal kjempe for frihet og rettferdighet","5. Jeg skal bidra til å skape en fredeligere verden"];
+const swap=(arr,i,t)=>arr.map((x,j)=>j===i?t:x).join("\n");
+const W={
+"Hvilke stillinger har vekt 50/50?":["Gå-stilling, L-stilling, sittestilling","Sittestilling, fiksert stilling, vertikal stilling","Gå-stilling, sittestilling, bakfotstilling"],
+"Hva skiller L-stilling fra fiksert stilling?":["Samme fotvinkel (15° inn). Lengden måles ulikt: L-stilling fra innsiden av bakre fot, fiksert stilling fra utsiden av bakre fot. Vekt: L-stilling 70/30, fiksert 50/50.","Samme fotvinkel (15° inn) og samme lengde. Eneste forskjell er vekten: L-stilling 60/40, fiksert 50/50.","Fiksert stilling har tærne rett frem, L-stilling 15° inn. Begge måles fra utsiden av bakre fot. Vekt: begge 70/30."],
+"Hvilken fot bestemmer om L-stilling er høyre/venstre?":["Fremste fot. Høyre fot foran = høyre L-stilling.","Retningen man ser. Ser man mot høyre = høyre L-stilling.","Hånden som utfører teknikken. Høyre hånd = høyre L-stilling."],
+"Seks grunnprinsipper for korrekt stilling (Gen. Choi)?":[
+ "1. Rett rygg (med få unntak)\n2. Spente skuldre\n3. Spent mage\n4. Korrekt facing (full, halv eller side)\n5. Hold likevekt\n6. Bruk knefjæringen riktig",
+ "1. Rett rygg (med få unntak)\n2. Avslappede skuldre\n3. Avslappet mage\n4. Korrekt facing (full, halv eller side)\n5. Hold likevekt\n6. Bruk knefjæringen riktig",
+ "1. Rett rygg (med få unntak)\n2. Avslappede skuldre\n3. Spent mage\n4. Alltid fullvendt mot motstanderen\n5. Hold likevekt\n6. Hold knærne strake"],
+"Hvilken klarstilling starter Kwang-Gae og Po-Eun?":["Narani junbi sogi (parallell klarstilling)","Moa junbi sogi B (tett klarstilling B)","Moa junbi sogi C (tett klarstilling C)"],
+"Hvilke mønstre avsluttes med venstrehånds angrep, og hvorfor?":[
+ "Do-San: Ahn Ch'ang Hos død i eksil.\nChoong-Moo: Yi Sun-Sins beklagelige død i 1598.",
+ "Dan-Gun: han satte ikke grenser rundt landet.\nJoong-Gun: An Joong-Guns henrettelse i 1910.",
+ "Hwa-Rang: gruppen ble oppløst under Yi-dynastiet.\nChoong-Moo: Yi Sun-Sins beklagelige død i 1598."],
+"Hwa-Rang-gruppens prinsipper?":[
+ "Lojalitet overfor kongen og fedrelandet\nLydighet mot generalen\nÆrlighet\nTillit og samhold blant venner\nAldri gi opp i kamp\nRettferdighet i kamp",
+ "Lojalitet overfor kongen og fedrelandet\nLydighet mot foreldre\nÆrlighet\nTillit og samhold blant venner\nAldri gi opp i kamp\nSeier for enhver pris",
+ "Lojalitet overfor kongen og fedrelandet\nLydighet mot foreldre\nYdmykhet\nHøflighet mot fremmede\nAldri gi opp i kamp\nRettferdighet i kamp"],
+"Hvilke kampsporter trente Hwa-Rang?":["Taekyon og Hapkido","Soobak og Kong Soo-Do","Karate og Taekyon"],
+"Hvilket dynasti fikk buddhismen gjennom Won-Hyo?":["Koguryo-dynastiet (år 686)","Baekje-dynastiet (år 686)","Koryo-dynastiet (år 686)"],
+"Japansk styre over Korea – årstall?":["1910–1953 (protektorat 1910–1919, annektert 1919–1953)","1895–1945 (protektorat 1895–1910, annektert 1910–1945)","1904–1950 (protektorat 1904–1910, annektert 1910–1950)"],
+"Hvor kommer navnet «Korea» fra?":["Silla-dynastiet, som forente de tre kongedømmene.","Joseon/Yi-dynastiet, som styrte fra 1392.","Baekje-dynastiet, via handel med Kina."],
+"Koreas perioder i tidslinjen?":[
+ "Goryeo/Koryo (57 f.Kr.–918) → Tre kongedømmer (918–1392) → Yi/Joseon (1392–1897/1910) → japansk styre → delt Korea (1945–)",
+ "Tre kongedømmer (57 f.Kr.–918) → Yi/Joseon (918–1392) → Goryeo/Koryo (1392–1897/1910) → japansk styre → delt Korea (1945–)",
+ "Tre kongedømmer (57 f.Kr.–918) → Goryeo/Koryo (918–1392) → Yi/Joseon (1392–1897/1910) → japansk styre → delt Korea (1953–)"],
+"Hvilket mønster har ingen gå-stillinger?":["Kwang-Gae","Ge-Baek","Hwa-Rang"],
+"Hvor i mønstrene kommer sittestilling første gang?":["Dan-Gun bev. 13–14 (lav blokk og oppadgående blokk)","Yul-Gok bev. 1–2 (middels punch)","Toi-Gye bev. 13 (W-form blokk)"],
+"Hvor kommer fiksert stilling første gang?":["Do-San bev. 5","Joong-Gun bev. 3","Won-Hyo bev. 7"],
+"Hvor kommer X-stilling første gang?":["Toi-Gye (pressende blokk med X-knyttneve)","Joong-Gun (oppadgående blokk med X-knyttneve)","Hwa-Rang (nedoverslag med knivhånd)"],
+"Hvor kommer ettbensstilling første gang?":["Kwang-Gae bev. 1","Ge-Baek bev. 2","Po-Eun bev. 1"],
+"Hvilke teknikker er nye i Po-Eun?":[KG_NY,GB_NY,"Bl.a. ettbensstilling, tvistspark, 9-form blokk, horisontalt punch, nedoverslag med side-knyttneve"],
+"Hvilke teknikker er nye i Kwang-Gae?":[PE_NY,GB_NY,"Bl.a. pressende spark, øseblokk, bakoverstøt med albue, lav frontblokk med knivhånd, U-form grabb"],
+"Hvilke teknikker er nye i Ge-Baek?":[KG_NY,PE_NY,"Bl.a. tvistspark, horisontalt støt med tvilling albue, midtre knoke-punch, pressende spark, høy bueblokk m/håndflate"],
+"Når fikk Taekwon-Do navnet sitt?":["22. mars 1966","15. august 1945","11. april 1950"],
+"Hvem satte Taekwon-Do i system og navnga teknikkene?":["Nam Tae Hi","Choi Jung Hwa (sønnen til Gen. Choi)","Kong Chin Hung"],
+"Koreakrigen – årstall?":["1945–1948","1950–1955","1951–1954"],
+"Hvor lenge ledet Gen. Choi ITF?":["Fra stiftelsen til han gikk av i 1990","Fra 1955 til 1973","Fra stiftelsen til sønnen tok over i 1995"],
+"Når ble ITF stiftet?":["11. april 1955 (Seoul)","22. mars 1955 (Seoul)","9. oktober 1973 (Seoul)"],
+"Hva skjedde med ITF etter 2002?":[
+ "Gen. Choi døde, og ITF ble slått sammen med WT under én olympisk organisasjon.",
+ "Gen. Choi døde, og ITF «sprakk» i 2 deler:\n1. Nordkoreansk-ledet\n2. Demokratisk styrt (valgt av medlemslandene)",
+ "Gen. Choi døde, og ITF «sprakk» i 3 deler:\n1. Sørkoreansk-ledet\n2. Nordkoreansk-ledet\n3. Ledet av sønnen Choi Jung Hwa"],
+"I hvilken militærenhet ble TKD utviklet til fullstendighet?":["1. infanteridivisjon","3. infanteridivisjon","Den koreanske marinen"],
+"De 5 grunnprinsippene (norsk og koreansk)?":[
+ "Høflighet – Ye Ui\nIntegritet – In Nae\nUtholdenhet – Yom Chi\nSelvkontroll – Guk Gi\nUkuelig ånd – Baekjul Boolgool",
+ "Høflighet – Guk Gi\nIntegritet – Yom Chi\nUtholdenhet – In Nae\nSelvkontroll – Ye Ui\nUkuelig ånd – Baekjul Boolgool",
+ "Høflighet – Ye Ui\nIntegritet – Yom Chi\nUtholdenhet – In Nae\nYdmykhet – Guk Gi\nUkuelig ånd – Baekjul Boolgool"],
+"Elevenes ed (ITF)?":[
+ swap(ED,1,"2. Jeg skal alltid adlyde instruktøren"),
+ swap(ED,3,"4. Jeg skal kjempe for mitt land og min klubb"),
+ swap(ED,4,"5. Jeg skal bruke Taekwon-Do til å forsvare de svake")],
+"Hvorfor finnes det to stilarter TKD?":[
+ "ITF og WT skilte lag fordi WT ville ha fullkontakt mens ITF ville beholde semikontakt – uten politiske årsaker.",
+ "WT ble stiftet først (1955), og ITF brøt ut i 1966 da Gen. Choi ville ha egne mønstre.",
+ "Stilartene skilte lag da Gen. Choi døde i 2002."],
+"Hovedforskjeller ITF vs. WT?":[
+ "ITF: mønstre kalt poomsae, olympisk idrett siden 2000, fullkontakt med vest.\nWT: mønstre kalt tul, sinusbevegelse, semikontakt med håndbeskyttere.",
+ "ITF: mønstre kalt tul, ingen sinusbevegelse, fullkontakt med vest.\nWT: mønstre kalt poomsae, semikontakt, slag mot hodet tillatt.",
+ "ITF: mønstre kalt tul, sinusbevegelse, semikontakt, olympisk idrett siden 2000.\nWT: mønstre kalt poomsae, fullkontakt, ikke olympisk."]
+};
+C.forEach(c=>{if(W[c.q])c.wrong=W[c.q]});
+// Høydespørsmål: feilalternativer = samme spark i andre høyder
+{const H=[["Lav","najunde"],["Middels","kaunde"],["Høy","nopunde"]];
+ C.forEach(c=>{if(c.cat!=="Spark i mønstre")return;const m=c.a.match(/^(Lav|Middels|Høy) \((najunde|kaunde|nopunde) ([^)]*)\)/);
+  if(m){const rest=c.a.slice(m[0].length);c.wrong=H.filter(h=>h[0]!==m[1]).map(h=>h[0]+" ("+h[1]+" "+m[3]+")"+rest);return}
+  if(c.a.startsWith("Bev. 14: høy"))c.wrong=["Bev. 14: middels. Bev. 17: høy.","Begge høye.","Begge middels."];
+  else if(c.a.startsWith("Middels – deretter"))c.wrong=["Høy – deretter middels utoverslag med knivhånd i L-stilling","Lav – deretter middels utoverslag med knivhånd i L-stilling"];
+  else if(c.a.startsWith("Flygende"))c.wrong=["Middels (kaunde yop cha jirugi), lander i gå-stilling","Høy (nopunde yop cha jirugi), lander i L-stilling"];
+ });}
+
+// Grupperer spørsmål av samme type, så feilalternativer hentes fra like spørsmål
+const PNAMES=["Chon-Ji","Dan-Gun","Do-San","Won-Hyo","Yul-Gok","Joong-Gun","Toi-Gye","Hwa-Rang","Choong-Moo","Kwang-Gae","Po-Eun","Ge-Baek"];
+function groupKey(c){
+ if(c.term)return "term";
+ if(c.cat==="Klarstillinger")return c.q.startsWith("Hvilken")?"Klar-hvilken":"Klarstillinger";
+ let q=c.q;
+ if(q.startsWith("Treffpunkt for "))return c.cat+"|Treffpunkt for";
+ if(q.startsWith("Grunnprinsipp – koreansk for"))return "Grunnprinsipp-ko";
+ for(const p of PNAMES)q=q.split(p).join("#");
+ q=q.replace(/\d+/g,"N");
+ if(q.includes(" – "))q=q.split(" – ").pop();
+ else if(/^(Koreansk navn|Hva er|Høyde):/.test(q))q=q.split(":")[0];
+ return c.cat+"|"+q;
+}
 // ---------- APP ----------
 
 const KEY="tkd1dan_quiz_v1";
@@ -386,10 +476,7 @@ const hsh=t=>{let h=5381;for(let i=0;i<t.length;i++)h=((h<<5)+h+t.charCodeAt(i))
 // Engangs-migrering av gammel fremgang (lagret per kortnummer)
 if(st.idv!==2){const nk={};for(const k in st.known){if(/^\d+$/.test(k)&&C[+k])nk[C[+k].key]=1;else nk[k]=1}st.known=nk;st.idv=2;save();}
 C.forEach((c,i)=>{c.id=c.key;
- if(c.term)c.g="term";
- else if(c.q.includes(" – "))c.g=c.cat+"|"+c.q.split(" – ").pop();
- else if(c.q.includes(":"))c.g=c.cat+"|"+c.q.split(":")[0];
- else c.g=c.cat;});
+ c.g=groupKey(c);});
 const PL={"Chon-Ji":9,"Dan-Gun":8,"Do-San":7,"Won-Hyo":6,"Yul-Gok":5,"Joong-Gun":4,"Toi-Gye":3,"Hwa-Rang":2,"Choong-Moo":1,"Kwang-Gae":0,"Po-Eun":0,"Ge-Baek":0};
 const GL={"10. Gup":10,"9. Gup":9,"8. Gup":8,"7. Gup":7,"6. Gup":6,"5. Gup":5,"4. Gup":4,"3. Gup":3,"2. Gup":2,"1. Gup":1,"1. Dan":0};
 C.forEach(c=>{if(c.lv!==undefined)return;
@@ -422,6 +509,7 @@ function shuffle(){for(let i=deck.length-1;i>0;i--){const j=Math.floor(Math.rand
 function pick(arr,n){arr=arr.slice();const o=[];while(arr.length&&o.length<n)o.push(arr.splice(Math.floor(Math.random()*arr.length),1)[0]);return o}
 function makeOpts(c){
  const a=qa(c).a;
+ if(c.wrong&&!(c.term&&st.rev)){const w=pick(c.wrong,3).concat([a]);return pick(w,w.length)}
  const P=f=>[...new Set(C.filter(x=>x.id!==c.id&&f(x)).map(x=>qa(x).a))].filter(x=>x!==a&&core(x)!==core(a));
  let pool=P(x=>on(x)&&x.g===c.g);
  if(pool.length<3)pool=pool.concat(P(x=>x.g===c.g));
@@ -497,7 +585,7 @@ renderCats();build();
 
 
 // ---------- AUTO-OPPDATERING ----------
-const APP_VERSION="20261113-202336";
+const APP_VERSION="20261113-203341";
 async function checkUpdate(){
  try{
   const r=await fetch("version.json?t="+Date.now(),{cache:"no-store"});if(!r.ok)return;
