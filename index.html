@@ -67,6 +67,7 @@ h1{font-size:20px;margin:0 0 4px}
 <div class="cats" id="cats"></div>
 <div class="bar">
 <label>🥋 Min grad: <select id="lv"><option value="10">10. gup</option><option value="9">9. gup</option><option value="8">8. gup</option><option value="7">7. gup</option><option value="6">6. gup</option><option value="5">5. gup</option><option value="4">4. gup</option><option value="3">3. gup</option><option value="2">2. gup</option><option value="1">1. gup</option><option value="0">1. dan (sortbelte)</option></select></label>
+<label><select id="scope"><option value="upto">Alt opp til og med graden</option><option value="only">Kun pensum for graden</option></select></label>
 <button id="mMC">Flervalg</button>
 <button id="mTY">Skriv svar</button>
 <button id="reverse">⇄ Snu ordliste</button>
@@ -373,7 +374,7 @@ for(const [k,n] of [["Ye Ui","Høflighet"],["Yom Chi","Integritet"],["In Nae","U
 // ---------- APP ----------
 
 const KEY="tkd1dan_quiz_v1";
-let st={known:{},cats:null,rev:false,mode:"mc",lv:0};
+let st={known:{},cats:null,rev:false,mode:"mc",lv:0,scope:"upto"};
 try{const x=JSON.parse(localStorage.getItem(KEY));if(x)st=Object.assign(st,x)}catch(e){}
 const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(st))}catch(e){}};
 C.forEach((c,i)=>{c.id=i;
@@ -392,12 +393,12 @@ C.forEach(c=>{if(c.lv!==undefined)return;
 // dynamiske samlespørsmål om motions
 const MT={"Dan-Gun":["continuous"],"Do-San":["fast"],"Yul-Gok":["natural","fast","connecting"],"Joong-Gun":["fast","slow"],"Toi-Gye":["continuous","slow","stamping"],"Hwa-Rang":["sliding","fast"],"Choong-Moo":["fast"],"Kwang-Gae":["slow","double stepping","sliding","consecutive kick","stamping","shifting"],"Po-Eun":["continuous","slow"],"Ge-Baek":["fast","continuous","connecting","skip","stamping"]};
 const DYN0=C.length;
-function dynCards(){C.length=DYN0;const sel=st.lv;
+function dynCards(){C.length=DYN0;const sel=st.lv;if(st.scope==="only")return;
  const ps=Object.keys(MT).filter(p=>PL[p]>=sel);if(ps.length<2)return;
  const last=ps[ps.length-1];
  for(const m of [...new Set(ps.flatMap(p=>MT[p]))]){const has=ps.filter(p=>MT[p].includes(m));
   C.push({cat:"Motions",q:"Hvilke mønstre (t.o.m. "+last+") har "+m+" motion?",a:has.join(", "),lv:sel,dyn:true,g:"Motions|dyn",id:"d"+sel+m})}}
-const on=c=>c.lv>=st.lv;
+const on=c=>st.scope==="only"?c.lv===st.lv:c.lv>=st.lv;
 const cats=[...new Set(C.map(c=>c.cat))];
 if(!st.cats)st.cats=cats.slice();
 let deck=[],ans=null,opts=null,right=0,wrong=0;
@@ -430,7 +431,7 @@ function renderCats(){
  document.getElementById("mMC").className=st.mode==="mc"?"on":"";
  document.getElementById("mTY").className=st.mode==="ty"?"on":"";
  document.getElementById("reverse").className=st.rev?"on":"";
- document.getElementById("lv").value=st.lv;
+ document.getElementById("lv").value=st.lv;document.getElementById("scope").value=st.scope;
 }
 function result(ok,c,extra){
  ans={ok};
@@ -478,6 +479,7 @@ document.getElementById("mMC").onclick=()=>{st.mode="mc";save();ans=null;renderC
 document.getElementById("mTY").onclick=()=>{st.mode="ty";save();ans=null;renderCats();render()};
 document.getElementById("reverse").onclick=()=>{st.rev=!st.rev;save();ans=null;opts=null;renderCats();render()};
 document.getElementById("shuffle").onclick=shuffle;
+document.getElementById("scope").onchange=e=>{st.scope=e.target.value;save();dynCards();renderCats();build()};
 document.getElementById("lv").onchange=e=>{st.lv=+e.target.value;save();dynCards();renderCats();build()};
 document.getElementById("reset").onclick=()=>{st.known={};right=0;wrong=0;save();renderCats();build()};
 document.addEventListener("keydown",e=>{if(e.target.tagName==="INPUT")return;
