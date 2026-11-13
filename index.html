@@ -7,6 +7,9 @@
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
 <link rel="icon" type="image/png" sizes="192x192" href="favicon-192.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta http-equiv="Cache-Control" content="no-cache">
 <title>Røyken TKD – Teoriquiz</title>
 <meta name="apple-mobile-web-app-title" content="TKD Teoriquiz">
 <meta name="description" content="Teoriquiz for Røyken Taekwon-Do Klubb – fra 10. gup til 1. dan">
@@ -487,6 +490,22 @@ document.addEventListener("keydown",e=>{if(e.target.tagName==="INPUT")return;
  else if(e.key==="Enter"){const n=document.getElementById("nx");if(n)n.click()}});
 renderCats();build();
 
+
+// ---------- AUTO-OPPDATERING ----------
+const APP_VERSION="20261113-175814";
+async function checkUpdate(){
+ try{
+  const r=await fetch("version.json?t="+Date.now(),{cache:"no-store"});if(!r.ok)return;
+  const v=(await r.json()).v;
+  if(!v||v===APP_VERSION)return;
+  const k="tkd_reload_"+v;
+  try{if(sessionStorage.getItem(k))return;sessionStorage.setItem(k,"1")}catch(e){}
+  location.replace(location.pathname+"?v="+encodeURIComponent(v)+location.hash);
+ }catch(e){}
+}
+checkUpdate();
+document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible")checkUpdate()});
+window.addEventListener("pageshow",e=>{if(e.persisted)checkUpdate()});
 </script>
 </body>
 </html>
