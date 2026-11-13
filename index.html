@@ -380,7 +380,12 @@ const KEY="tkd1dan_quiz_v1";
 let st={known:{},cats:null,rev:false,mode:"mc",lv:0,scope:"upto"};
 try{const x=JSON.parse(localStorage.getItem(KEY));if(x)st=Object.assign(st,x)}catch(e){}
 const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(st))}catch(e){}};
-C.forEach((c,i)=>{c.id=i;
+// Stabil ID per kort basert på kategori + spørsmål, så fremgang overlever at kort legges til/fjernes
+const hsh=t=>{let h=5381;for(let i=0;i<t.length;i++)h=((h<<5)+h+t.charCodeAt(i))|0;return "k"+(h>>>0).toString(36)};
+{const seen={};C.forEach(c=>{let k=hsh(c.cat+"|"+c.q+(c.term?"|"+c.a:""));while(seen[k])k+="x";seen[k]=1;c.key=k});}
+// Engangs-migrering av gammel fremgang (lagret per kortnummer)
+if(st.idv!==2){const nk={};for(const k in st.known){if(/^\d+$/.test(k)&&C[+k])nk[C[+k].key]=1;else nk[k]=1}st.known=nk;st.idv=2;save();}
+C.forEach((c,i)=>{c.id=c.key;
  if(c.term)c.g="term";
  else if(c.q.includes(" – "))c.g=c.cat+"|"+c.q.split(" – ").pop();
  else if(c.q.includes(":"))c.g=c.cat+"|"+c.q.split(":")[0];
@@ -492,7 +497,7 @@ renderCats();build();
 
 
 // ---------- AUTO-OPPDATERING ----------
-const APP_VERSION="20261113-175814";
+const APP_VERSION="20261113-201649";
 async function checkUpdate(){
  try{
   const r=await fetch("version.json?t="+Date.now(),{cache:"no-store"});if(!r.ok)return;
