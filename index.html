@@ -811,7 +811,7 @@ const PL={"Chon-Ji":9,"Dan-Gun":8,"Do-San":7,"Won-Hyo":6,"Yul-Gok":5,"Joong-Gun"
 const GL=Object.assign({"10. Gup":10,"9. Gup":9,"8. Gup":8,"7. Gup":7,"6. Gup":6,"5. Gup":5,"4. Gup":4,"3. Gup":3,"2. Gup":2,"1. Gup":1},DLV);
 C.forEach(c=>{if(c.lv!==undefined)return;
  if(c.term){c.lv=GL[c.grade];return}
- if(c.cat==="TKD-historie"||c.cat==="Etikk og organisasjon"){c.lv=0;return}
+ if(c.cat==="TKD-historie"||c.cat==="Etikk og organisasjon"){c.lv=1;return}
  let l=null;const t=c.q+" "+c.a;for(const p in PL)if(t.includes(p))l=l===null?PL[p]:Math.min(l,PL[p]);
  if(/1\. dan/i.test(t+" "+(c.note||""))&&(l===null||l>0))l=0;
  c.lv=l===null?10:l;});
@@ -826,8 +826,10 @@ function dynCards(){C.length=DYN0;const sel=st.lv;if(st.scope==="only")return;
   C.push({cat:"Motions",q:"Hvilke mønstre (t.o.m. "+last+") har "+m+" motion?",a:has.join(", "),lv:sel,dyn:true,g:"Motions|dyn",id:"d"+sel+m})}}
 // «Kun graden»: for gup = kun den graden; for dan = hele beltet fra grunngraden til valgt delgrad
 const danBase=lv=>-(danOf(lv)-1)*4;
-const inScope=(cl,lv,scope)=>scope==="only"?(lv>0?cl===lv:(cl<=danBase(lv)&&cl>=lv)):cl>=lv;
-const on=c=>inScope(c.lv,st.lv,st.scope);
+// «Kun graden» for gup tar også med mønster- og teknikkspørsmål for forrige grads mønster (teorikravet nevner begge mønstrene)
+const PATCATS=["Stillinger","Klarstillinger","Punch","Blokker","Slag","Støt","Spark","Tverrkutt","Mønster","Mønsterhistorie","Motions","Mønsteranalyse","Spark i mønstre"];
+const inScope=(cl,lv,scope,cat)=>scope==="only"?(lv>0?(cl===lv||(cl===lv+1&&lv<10&&PATCATS.includes(cat))):(cl<=danBase(lv)&&cl>=lv)):cl>=lv;
+const on=c=>inScope(c.lv,st.lv,st.scope,c.cat);
 const cats=[...new Set(C.map(c=>c.cat))];
 if(!st.cats)st.cats=cats.slice();
 // Nye temaer legges automatisk til hos eksisterende brukere
@@ -903,7 +905,7 @@ const CATCOL={"Ordliste":"#2f5da8","Stillinger":"#2e7d46","Klarstillinger":"#2e7
 
 // ---------- STATISTIKK ----------
 function poolFor(lv,scope){return C.slice(0,DYN0).filter(c=>(scope==="only"?c.lv===lv:c.lv>=lv)&&st.cats.includes(c.cat))}
-function mastery(lv){const p=C.slice(0,DYN0).filter(c=>inScope(c.lv,lv,st.scope)&&st.cats.includes(c.cat));const k=p.filter(c=>st.known[c.id]).length;return{k,n:p.length,pct:p.length?Math.round(100*k/p.length):0}}
+function mastery(lv){const p=C.slice(0,DYN0).filter(c=>inScope(c.lv,lv,st.scope,c.cat)&&st.cats.includes(c.cat));const k=p.filter(c=>st.known[c.id]).length;return{k,n:p.length,pct:p.length?Math.round(100*k/p.length):0}}
 
 // ---------- VISNINGER ----------
 const app=document.getElementById("app");
@@ -923,7 +925,7 @@ function renderHome(){
  </header>
  <div class="hangul" aria-hidden="true">태권도</div>
  <section>
-  <h2>${st.picked?"Din grad":"Velg graden din"}</h2><p class="hint">Prosenten viser hvor mye du kan ${st.scope==="only"?"av pensum for hver grad (for dan: hele beltet t.o.m. valgt delgrad)":"av alt pensum opp til hver grad"}.</p>
+  <h2>${st.picked?"Din grad":"Velg graden din"}</h2><p class="hint">Prosenten viser hvor mye du kan ${st.scope==="only"?"av teorikravet for hver grad (gup: graden og forrige mønster; dan: hele beltet t.o.m. valgt delgrad)":"av alt pensum opp til hver grad"}.</p>
   <div class="grades">${GRADES.filter(x=>!x.dan).map(x=>{const selD=x.dan&&danOf(st.lv)===x.dan&&st.lv<=0;const m=mastery(selD?st.lv:x.lv);return `<button class="grade${(x.dan?selD:x.lv===st.lv)&&st.picked?" sel":""}${x.dan?" dan":""}" data-lv="${x.lv}">
    ${beltSVG(x,44,12)}<span class="gn">${selD?gname(st.lv):x.name}</span><span class="gp"><i style="width:${m.pct}%"></i></span><span class="gpt">${m.pct} %</span></button>`}).join("")}</div><div class="grades dans">${GRADES.filter(x=>x.dan).map(x=>{const selD=x.dan&&danOf(st.lv)===x.dan&&st.lv<=0;const m=mastery(selD?st.lv:x.lv);return `<button class="grade${(x.dan?selD:x.lv===st.lv)&&st.picked?" sel":""}${x.dan?" dan":""}" data-lv="${x.lv}">
    ${beltSVG(x,44,12)}<span class="gn">${selD?gname(st.lv):x.name}</span><span class="gp"><i style="width:${m.pct}%"></i></span><span class="gpt">${m.pct} %</span></button>`}).join("")}</div>
@@ -1084,7 +1086,7 @@ document.addEventListener("touchend",e=>{if(tx===null||view!=="play"||!cur||!cur
 renderHome();
 
 // ---------- AUTO-OPPDATERING ----------
-const APP_VERSION="20261115-160351";
+const APP_VERSION="20261115-160922";
 async function checkUpdate(){try{const r=await fetch("version.json?t="+Date.now(),{cache:"no-store"});if(!r.ok)return;const v=(await r.json()).v;if(!v||v===APP_VERSION)return;const k="tkd_reload_"+v;try{if(sessionStorage.getItem(k))return;sessionStorage.setItem(k,"1")}catch(e){}location.replace(location.pathname+"?v="+encodeURIComponent(v)+location.hash)}catch(e){}}
 checkUpdate();
 document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible"&&view!=="play")checkUpdate()});
