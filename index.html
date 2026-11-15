@@ -420,12 +420,12 @@ add("Mønsterhistorie","Koreas perioder i tidslinjen?","Tre kongedømmer (57 f.K
 const M=[
 ["Dan-Gun","Continuous motion: 13–14 (lav underarmsblokk → oppadgående blokk)"],
 ["Do-San","Fast motion: 15–16 og 19–20 (rett punch → omvendt punch)"],
-["Yul-Gok","Natural motion: 15, 18 (rett bueblokk m/håndflate)\nFast motion: 2–3, 5–6, 9–10, 13–14\nConnecting motion: 16–17, 19–20 (omvendt bueblokk → rett punch)"],
+["Yul-Gok","Natural motion: 15, 16, 18 og 19 (bueblokkene med håndflate)\nFast motion: 2–3, 5–6, 9–10, 13–14\nConnecting motion: 16–17, 19–20 (omvendt bueblokk → rett punch)"],
 ["Joong-Gun","Fast motion: 15–16, 18–19 (frigjøring → høyt omvendt punch)\nSlow motion: 27, 29, 30 (pressende blokk m/håndflate ×2, vinkelpunch)"],
 ["Toi-Gye","Continuous motion: 7–8 (pressende blokk X-knyttneve → høyt vertikalt tvilling punch)\nSlow motion: 3, 6, 12 (side-bakslag)\nStamping motion: 13–18 (W-form blokk ×6)"],
 ["Hwa-Rang","Sliding (glidende): 6, 25\nFast motion: 18–19 (høyt svingspark ×2)"],
 ["Choong-Moo","Fast motion: 14–15 (høyt svingspark → middels bakspark)"],
-["Kwang-Gae","Slow motion: 2, 3, 10, 11, 21, 22, 26, 30\nDouble stepping: 4, 6\nSliding: 5, 7\nConsecutive kick: 13–14, 17–18 (pressende spark → sidespark)\nStamping: 23, 27, 31, 32, 36\nShifting: 25, 29"],
+["Kwang-Gae","Slow motion: 2, 3, 10, 11, 21, 22, 26, 30\nNatural motion: 4, 6 (med double stepping før bevegelsen)\nSliding: 5, 7\nConsecutive kick: 13–14, 17–18 (pressende spark → sidespark)\nStamping: 23, 27, 31, 32, 36\nShifting: 25, 29"],
 ["Po-Eun","Continuous motion: 6–12 og 24–30\nSlow motion: 15, 33 (horisontalt støt m/tvilling albue)"],
 ["Ge-Baek","Fast motion: 3–4, 22–23\nContinuous motion: 5–6, 37–38\nConnecting motion: 9–10, 29–30 (øseblokk → middels punch)\nSkip: 33 (middels svingspark)\nStamping: 39, 40 (W-form blokk ×2)"]
 ];
@@ -751,7 +751,7 @@ C.forEach(c=>{if(c.lv!==undefined)return;
  c.lv=l===null?10:l;});
 C.forEach(c=>{if(c.lv!==0||c.term||/historie|Etikk|Mønster|Motions|Graderings/.test(c.cat))return;const t=c.q+" "+c.a+" "+(c.note||"");
  if(t.includes("Kwang-Gae"))return;if(t.includes("Po-Eun"))c.lv=-1;else if(t.includes("Ge-Baek"))c.lv=-2;});
-const MT={"Eui-Am":["continuous","slow","stamping","shifting"],"Choong-Jang":["fast","slow","stamping","sliding"],"Juche":["slow","stamping","sliding","natural","consecutive kick"],"Sam-Il":["continuous","stamping","sliding"],"Yoo-Sin":["continuous","connecting","fast","slow","stamping","sliding","natural","consecutive kick"],"Choi-Yong":["fast","stamping","sliding","natural","consecutive kick"],"Dan-Gun":["continuous"],"Do-San":["fast"],"Yul-Gok":["natural","fast","connecting"],"Joong-Gun":["fast","slow"],"Toi-Gye":["continuous","slow","stamping"],"Hwa-Rang":["sliding","fast"],"Choong-Moo":["fast"],"Kwang-Gae":["slow","double stepping","sliding","consecutive kick","stamping","shifting"],"Po-Eun":["continuous","slow"],"Ge-Baek":["fast","continuous","connecting","skip","stamping"]};
+const MT={"Eui-Am":["continuous","slow","stamping","shifting"],"Choong-Jang":["fast","slow","stamping","sliding"],"Juche":["slow","stamping","sliding","natural","consecutive kick"],"Sam-Il":["continuous","stamping","sliding"],"Yoo-Sin":["continuous","connecting","fast","slow","stamping","sliding","natural","consecutive kick"],"Choi-Yong":["fast","stamping","sliding","natural","consecutive kick"],"Dan-Gun":["continuous"],"Do-San":["fast"],"Yul-Gok":["natural","fast","connecting"],"Joong-Gun":["fast","slow"],"Toi-Gye":["continuous","slow","stamping"],"Hwa-Rang":["sliding","fast"],"Choong-Moo":["fast"],"Kwang-Gae":["slow","natural","sliding","consecutive kick","stamping","shifting"],"Po-Eun":["continuous","slow"],"Ge-Baek":["fast","continuous","connecting","skip","stamping"]};
 const DYN0=C.length;
 function dynCards(){C.length=DYN0;const sel=st.lv;if(st.scope==="only")return;
  const ps=Object.keys(PL).filter(p=>MT[p]&&PL[p]>=sel);if(ps.length<2)return;
@@ -1008,7 +1008,7 @@ document.addEventListener("touchend",e=>{if(tx===null||view!=="play"||!cur||!cur
 renderHome();
 
 // ---------- AUTO-OPPDATERING ----------
-const APP_VERSION="20261115-114133";
+const APP_VERSION="20261115-121311";
 async function checkUpdate(){try{const r=await fetch("version.json?t="+Date.now(),{cache:"no-store"});if(!r.ok)return;const v=(await r.json()).v;if(!v||v===APP_VERSION)return;const k="tkd_reload_"+v;try{if(sessionStorage.getItem(k))return;sessionStorage.setItem(k,"1")}catch(e){}location.replace(location.pathname+"?v="+encodeURIComponent(v)+location.hash)}catch(e){}}
 checkUpdate();
 document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible"&&view!=="play")checkUpdate()});
