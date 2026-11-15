@@ -467,12 +467,12 @@ add("TKD-historie","Hva skjedde med ITF etter 2002?","Gen. Choi døde, og ITF «
 add("TKD-historie","I hvilken militærenhet ble TKD utviklet til fullstendighet?","29. infanteridivisjon (jf. Hwa-Rang)");
 
 // ETIKK / ORGANISASJON (tillegg – sjekk mot klubbens versjon)
-add("Etikk og organisasjon","De 5 grunnprinsippene (norsk og koreansk)?","Høflighet – Ye Ui\nIntegritet – Yom Chi\nUtholdenhet – In Nae\nSelvkontroll – Guk Gi\nUkuelig ånd – Baekjul Boolgool","Tillegg – ikke fra dokumentene. Sjekk mot NTNs ordlyd.");
-add("Etikk og organisasjon","Elevenes ed (ITF)?","1. Jeg skal følge grunnprinsippene i Taekwon-Do\n2. Jeg skal respektere instruktøren og de som er høyere gradert\n3. Jeg skal aldri misbruke Taekwon-Do\n4. Jeg skal kjempe for frihet og rettferdighet\n5. Jeg skal bidra til å skape en fredeligere verden","Tillegg – ikke fra dokumentene. Sjekk mot NTNs ordlyd.");
+add("Etikk og organisasjon","De 5 grunnprinsippene (norsk og koreansk)?","Høflighet – Ye Ui\nÆrlighet – Yom Chi\nIherdighet – In Nae\nSelvkontroll – Guk Gi\nUkuelig ånd – Baekjul Boolgool");C.at(-1).lv=10;
+add("Etikk og organisasjon","Elevenes ed (ITF)?","1. Jeg skal følge reglene i Taekwon-Do\n2. Jeg skal respektere instruktøren og seniorelevene\n3. Jeg skal aldri misbruke Taekwon-Do\n4. Jeg skal bli en forkjemper for frihet og rettferdighet\n5. Jeg skal hjelpe til med å bygge en fredeligere verden");C.at(-1).lv=10;
 add("Etikk og organisasjon","Hvorfor finnes det to stilarter TKD?","ITF (Gen. Choi, 1966) og WT/WTF (stiftet 1973 i Sør-Korea, Kukkiwon) skilte lag etter politisk konflikt rundt Gen. Choi og Sør-Korea.","Tillegg – ikke fra dokumentene");
 add("Etikk og organisasjon","Hovedforskjeller ITF vs. WT?","ITF: mønstre kalt tul, sinusbevegelse, lett-/semikontakt med håndbeskyttere, slag mot hodet tillatt.\nWT: mønstre kalt poomsae, olympisk idrett siden 2000, fullkontakt med vest og elektroniske poeng, mer spark-fokus.","Tillegg – ikke fra dokumentene");
 
-for(const [k,n] of [["Ye Ui","Høflighet"],["Yom Chi","Integritet"],["In Nae","Utholdenhet"],["Guk Gi","Selvkontroll"],["Baekjul Boolgool","Ukuelig ånd"]]) add("Etikk og organisasjon","Grunnprinsipp – koreansk for: "+n,k,"Tillegg – ikke fra dokumentene");
+for(const [k,n] of [["Ye Ui","Høflighet"],["Yom Chi","Ærlighet"],["In Nae","Iherdighet"],["Guk Gi","Selvkontroll"],["Baekjul Boolgool","Ukuelig ånd"]]){add("Etikk og organisasjon","Grunnprinsipp – koreansk for: "+n,k);C.at(-1).lv=10;}
 
 // ---------- 2. OG 3. DAN (NTN graderingspensum) ----------
 const DLV={"1. Dan":0,"1. Dan-1":-1,"1. Dan-2":-2,"1. Dan-3":-3,"2. Dan":-4,"2. Dan-1":-5,"2. Dan-2":-6,"2. Dan-3":-7,"3. Dan":-8,"3. Dan-1":-9,"3. Dan-2":-10,"3. Dan-3":-11};
@@ -618,22 +618,79 @@ const SH2=[
 ];
 for(const [p,k,a] of SH2)add("Spark i mønstre","Høyde: "+k+" i "+p+"?",a);
 
-// Graderingspensum – mønstre per grad
+// Graderingspensum – mønstre per grad (graden man har)
+const GLV=Object.assign({"10. gup":10,"9. gup":9,"8. gup":8,"7. gup":7,"6. gup":6,"5. gup":5,"4. gup":4,"3. gup":3,"2. gup":2,"1. gup":1},Object.fromEntries(Object.entries(DLV).map(([k,v])=>[k.replace("Dan","dan"),v])));
 const GP=[
-["1. Dan","Hwa-Rang, Choong-Moo og Kwang-Gae"],
-["1. Dan-1","Choong-Moo, Kwang-Gae og Po-Eun"],
-["1. Dan-2","Kwang-Gae, Po-Eun og Ge-Baek"],
-["1. Dan-3","Kwang-Gae, Po-Eun og Ge-Baek + to mønstre eksaminator velger (Chon-Ji–Choong-Moo)"],
-["2. Dan","Kwang-Gae, Po-Eun, Ge-Baek og Eui-Am"],
-["2. Dan-1","Po-Eun, Ge-Baek, Eui-Am og Choong-Jang"],
-["2. Dan-2","Ge-Baek, Eui-Am, Choong-Jang og Juche"],
-["2. Dan-3","Eui-Am, Choong-Jang og Juche + to mønstre eksaminator velger (Chon-Ji–Ge-Baek)"],
-["3. Dan","Eui-Am, Choong-Jang, Juche og Sam-Il"],
-["3. Dan-1","Choong-Jang, Juche, Sam-Il og Yoo-Sin"],
-["3. Dan-2","Juche, Sam-Il, Yoo-Sin og Choi-Yong"],
-["3. Dan-3","Sam-Il, Yoo-Sin og Choi-Yong + to mønstre eksaminator velger (Chon-Ji–Juche)"]
+["9. gup","Chon-Ji"],
+["8. gup","Chon-Ji og Dan-Gun"],
+["7. gup","Dan-Gun og Do-San"],
+["6. gup","Do-San og Won-Hyo"],
+["5. gup","Won-Hyo og Yul-Gok"],
+["4. gup","Yul-Gok og Joong-Gun"],
+["3. gup","Joong-Gun og Toi-Gye"],
+["2. gup","Toi-Gye og Hwa-Rang"],
+["1. gup","Hwa-Rang og Choong-Moo + ett mønster eksaminator velger (Chon-Ji–Toi-Gye)"],
+["1. dan","Hwa-Rang, Choong-Moo og Kwang-Gae"],
+["1. dan-1","Choong-Moo, Kwang-Gae og Po-Eun"],
+["1. dan-2","Kwang-Gae, Po-Eun og Ge-Baek"],
+["1. dan-3","Kwang-Gae, Po-Eun og Ge-Baek + to mønstre eksaminator velger (Chon-Ji–Choong-Moo)"],
+["2. dan","Kwang-Gae, Po-Eun, Ge-Baek og Eui-Am"],
+["2. dan-1","Po-Eun, Ge-Baek, Eui-Am og Choong-Jang"],
+["2. dan-2","Ge-Baek, Eui-Am, Choong-Jang og Juche"],
+["2. dan-3","Eui-Am, Choong-Jang og Juche + to mønstre eksaminator velger (Chon-Ji–Ge-Baek)"],
+["3. dan","Eui-Am, Choong-Jang, Juche og Sam-Il"],
+["3. dan-1","Choong-Jang, Juche, Sam-Il og Yoo-Sin"],
+["3. dan-2","Juche, Sam-Il, Yoo-Sin og Choi-Yong"],
+["3. dan-3","Sam-Il, Yoo-Sin og Choi-Yong + to mønstre eksaminator velger (Chon-Ji–Juche)"]
 ];
-for(const [g,a] of GP){add("Graderingspensum","Hvilke mønstre skal vises til gradering "+g.replace("Dan","dan")+"?",a);setLv(DLV[g]);}
+for(const [g,a] of GP){add("Graderingspensum","Du har "+g+" – hvilke mønstre viser du på neste gradering?",a);setLv(GLV[g]);}
+
+// Firevendinger (NTN graderingspensum, seniorgrader/helgrader)
+const FV={
+"10. gup":["Punch","Blokk","Strakt frontspark","Front snap-spark"],
+"9. gup":["Strakt frontspark","Front snap-spark","Sidespark"],
+"8. gup":["Strakt frontspark","Front snap-spark","Sidespark","Svingspark"],
+"7. gup":["Oppadstigende frontspark","Front snap-spark","Sidespark","Svingspark"],
+"6. gup":["Strakt frontspark","Front snap-spark","Sidespark","Svingspark"],
+"5. gup":["Front snap-spark","Sidespark","Svingspark","Bakspark"],
+"4. gup":["Gjennomtrengende sidespark","Svingspark","Gjennomtrengende bakspark","Frontspark/svingspark","Svingspark/sidespark"],
+"3. gup":["Gjennomtrengende sidespark","Svingspark","Gjennomtrengende bakspark","Frontspark/svingspark","Svingspark/sidespark","Frontspark/svingspark/sidespark"],
+"2. gup":["Svingspark","Gjennomtrengende bakspark","Frontspark/svingspark","Svingspark/sidespark","Frontspark/svingspark/sidespark","Sidespark/sidespark"],
+"1. gup":["Gjennomtrengende bakspark","Frontspark/svingspark","Svingspark/sidespark","Frontspark/svingspark/sidespark","Sidespark/sidespark","Svingspark/svingspark"],
+"1. dan":["Buespark/sidespark","Halvsirkelspark/sidespark","Pressende spark/sidespark","Front/bak/sving/sidespark"],
+"1. dan-1":["Omvendt krokspark","Buespark/sidespark","Halvsirkelspark/sidespark","Flygende frontspark"],
+"1. dan-2":["Trippelt sidespark","Trippelt svingspark","Pressende spark/sidespark","Flygende svingspark"],
+"1. dan-3":["Krok/sving/sidespark","Front/krok/svingspark","Trippelt svingspark","Flygende sidespark"],
+"2. dan":["Omvendt svingspark","Front/krok/svingspark","Krok/sving/sidespark","Flygende sidespark"],
+"2. dan-1":["Omvendt svingspark","Krok/sving/sidespark","Dobbelt front/dobbelt sidespark","Flygende omvendt svingspark"],
+"2. dan-2":["Omvendt svingspark","Omvendt krok/sidespark","Krok/sving/sidespark","Flygende krok/svingspark"],
+"2. dan-3":["Omvendt krok/sidespark","Middels tvistspark","Dobbelt sving/dobbelt sidespark","Flygende tvistspark"],
+"3. dan":["Omvendt krok/sidespark","Høyt tvistspark","Dobbelt front/dobbelt sving/dobbelt sidespark","Flygende tvistspark"],
+"3. dan-1":["Lavt tvist/middels tvistspark","Høyt tvistspark","Dobbelt front/dobbelt sving/dobbelt sidespark","Flygende dobbelt svingspark"],
+"3. dan-2":["Høyt tvistspark","Omvendt krok/sving/sidespark","Trippelt side/svingspark","Flygende dobbelt svingspark"],
+"3. dan-3":["Trippelt tvistspark","Trippelt side/svingspark","Flygende sving/sidespark"]
+};
+const lst=a=>a.length>1?a.slice(0,-1).join(", ")+" og "+a.at(-1).toLowerCase():a[0];
+for(const g in FV){add("Firevendinger","Du har "+g+" – hvilke firevendinger viser du på neste gradering?",lst(FV[g].map((x,i)=>i?x.toLowerCase():x)));setLv(GLV[g]);}
+// Koreanske navn (der pensum oppgir dem), satt på graden de dukker opp første gang
+const FK=[
+["Gjennomtrengende sidespark","Saju yop cha jirugi","4. gup"],["Svingspark","Saju dollyo chagi","4. gup"],["Gjennomtrengende bakspark","Saju dwit cha jirugi","4. gup"],
+["Frontspark/svingspark","Saju ap/dollyo chagi","4. gup"],["Svingspark/sidespark","Saju dollyo/yop chagi","4. gup"],
+["Frontspark/svingspark/sidespark","Saju ap/dollyo/yop chagi","3. gup"],["Sidespark/sidespark","Saju yop/yop chagi","2. gup"],["Svingspark/svingspark","Saju dollyo/dollyo chagi","1. gup"],
+["Buespark/sidespark","Saju golcho/yop chagi","1. dan"],["Halvsirkelspark/sidespark","Saju bandal/yop chagi","1. dan"],["Pressende spark/sidespark","Saju noollo/yop chagi","1. dan"],["Front/bak/sving/sidespark","Saju ap/dwit/dollyo/yop chagi","1. dan"],
+["Omvendt krokspark","Saju bandae goro chagi","1. dan-1"],["Flygende frontspark","Saju twimyo ap chagi","1. dan-1"],
+["Trippelt sidespark","Saju yop/yop/yop chagi","1. dan-2"],["Trippelt svingspark","Saju dollyo/dollyo/dollyo chagi","1. dan-2"],["Flygende svingspark","Saju twimyo dollyo chagi","1. dan-2"],
+["Krok/sving/sidespark","Saju goro/dollyo/yop chagi","1. dan-3"],["Front/krok/svingspark","Saju ap/goro/dollyo chagi","1. dan-3"],["Flygende sidespark","Saju twimyo yop cha jirugi","1. dan-3"],
+["Omvendt svingspark","Saju bandae dollyo chagi","2. dan"],
+["Dobbelt front/dobbelt sidespark","Saju ap/ap/yop/yop chagi","2. dan-1"],["Flygende omvendt svingspark","Saju twimyo bandae dollyo chagi","2. dan-1"],
+["Omvendt krok/sidespark","Saju bandae goro/yop chagi","2. dan-2"],["Flygende krok/svingspark","Saju twimyo goro/dollyo chagi","2. dan-2"],
+["Middels tvistspark","Saju kaunde bituro chagi","2. dan-3"],["Dobbelt sving/dobbelt sidespark","Saju dollyo/dollyo/yop/yop chagi","2. dan-3"],["Flygende tvistspark","Saju twimyo bituro chagi","2. dan-3"],
+["Høyt tvistspark","Saju nopunde bituro chagi","3. dan"],["Dobbelt front/dobbelt sving/dobbelt sidespark","Saju ap/ap/dollyo/dollyo/yop/yop chagi","3. dan"],
+["Lavt tvist/middels tvistspark","Saju najunde bituro/kaunde bituro chagi","3. dan-1"],["Flygende dobbelt svingspark","Saju twimyo dollyo/dollyo chagi","3. dan-1"],
+["Omvendt krok/sving/sidespark","Saju bandae goro/dollyo/yop chagi","3. dan-2"],["Trippelt side/svingspark","Saju yop/yop/yop/dollyo/dollyo/dollyo chagi","3. dan-2"],
+["Trippelt tvistspark","Saju bituro/bituro/bituro chagi","3. dan-3"],["Flygende sving/sidespark","Saju twimyo dollyo/yop chagi","3. dan-3"]
+];
+for(const [no,ko,g] of FK){add("Firevendinger","Koreansk navn: Firevending – "+no,ko);setLv(GLV[g]);add("Firevendinger","Hvilken firevending er: "+ko+"?",no);setLv(GLV[g]);}
 
 // Faste nivåer for eksisterende kort som nevner flere 1. dan-mønstre
 {const k=C.find(c=>c.q==="Hvilken klarstilling starter Kwang-Gae og Po-Eun?");if(k)k.lv=0;}
@@ -646,7 +703,7 @@ C.forEach(c=>{if(W2[c.q])c.wrong=W2[c.q]});}
 const KG_NY="Bl.a. pressende spark (noollo chagi), nedoverslag med side-knyttneve, lav frontblokk med knivhånd, høy garderingsblokk m/knivhånd i bakfotstilling, høy bueblokk m/håndflate (double stepping)";
 const PE_NY="Bl.a. ettbensstilling, horisontalt punch, bakoverstøt med albue, horisontalt støt med tvilling albue, pressende blokk med front knyttneve, U-form grabb, spredningsblokk i sittestilling";
 const GB_NY="Bl.a. tvistspark, 9-form blokk, øseblokk, dobbel høy blokk med halvsirkelhånd, midtre knoke-punch, frontslag med baksiden av knyttneven, skip-motion";
-const ED=["1. Jeg skal følge grunnprinsippene i Taekwon-Do","2. Jeg skal respektere instruktøren og de som er høyere gradert","3. Jeg skal aldri misbruke Taekwon-Do","4. Jeg skal kjempe for frihet og rettferdighet","5. Jeg skal bidra til å skape en fredeligere verden"];
+const ED=["1. Jeg skal følge reglene i Taekwon-Do","2. Jeg skal respektere instruktøren og seniorelevene","3. Jeg skal aldri misbruke Taekwon-Do","4. Jeg skal bli en forkjemper for frihet og rettferdighet","5. Jeg skal hjelpe til med å bygge en fredeligere verden"];
 const swap=(arr,i,t)=>arr.map((x,j)=>j===i?t:x).join("\n");
 const W={
 "Hvilke stillinger har vekt 50/50?":["Gå-stilling, L-stilling, sittestilling","Sittestilling, fiksert stilling, vertikal stilling","Gå-stilling, sittestilling, bakfotstilling"],
@@ -692,13 +749,13 @@ const W={
  "Gen. Choi døde, og ITF «sprakk» i 3 deler:\n1. Sørkoreansk-ledet\n2. Nordkoreansk-ledet\n3. Ledet av sønnen Choi Jung Hwa"],
 "I hvilken militærenhet ble TKD utviklet til fullstendighet?":["1. infanteridivisjon","3. infanteridivisjon","Den koreanske marinen"],
 "De 5 grunnprinsippene (norsk og koreansk)?":[
- "Høflighet – Ye Ui\nIntegritet – In Nae\nUtholdenhet – Yom Chi\nSelvkontroll – Guk Gi\nUkuelig ånd – Baekjul Boolgool",
- "Høflighet – Guk Gi\nIntegritet – Yom Chi\nUtholdenhet – In Nae\nSelvkontroll – Ye Ui\nUkuelig ånd – Baekjul Boolgool",
- "Høflighet – Ye Ui\nIntegritet – Yom Chi\nUtholdenhet – In Nae\nYdmykhet – Guk Gi\nUkuelig ånd – Baekjul Boolgool"],
+ "Høflighet – Ye Ui\nÆrlighet – In Nae\nIherdighet – Yom Chi\nSelvkontroll – Guk Gi\nUkuelig ånd – Baekjul Boolgool",
+ "Høflighet – Guk Gi\nÆrlighet – Yom Chi\nIherdighet – In Nae\nSelvkontroll – Ye Ui\nUkuelig ånd – Baekjul Boolgool",
+ "Høflighet – Ye Ui\nÆrlighet – Yom Chi\nIherdighet – In Nae\nYdmykhet – Guk Gi\nUkuelig ånd – Baekjul Boolgool"],
 "Elevenes ed (ITF)?":[
  swap(ED,1,"2. Jeg skal alltid adlyde instruktøren"),
- swap(ED,3,"4. Jeg skal kjempe for mitt land og min klubb"),
- swap(ED,4,"5. Jeg skal bruke Taekwon-Do til å forsvare de svake")],
+ swap(ED,3,"4. Jeg skal bli en forkjemper for mitt land og min klubb"),
+ swap(ED,4,"5. Jeg skal hjelpe til med å forsvare de svake")],
 "Hvorfor finnes det to stilarter TKD?":[
  "ITF og WT skilte lag fordi WT ville ha fullkontakt mens ITF ville beholde semikontakt – uten politiske årsaker.",
  "WT ble stiftet først (1955), og ITF brøt ut i 1966 da Gen. Choi ville ha egne mønstre.",
@@ -732,6 +789,7 @@ function groupKey(c){
  if(c.cat==="Klarstillinger"&&!/^(Koreansk navn|Hva er):/.test(c.q))return c.q.startsWith("Hvilken")?"Klar-hvilken":"Klarstillinger";
  let q=c.q;
  if(c.cat==="Graderingspensum")return "Graderingspensum";
+ if(c.cat==="Firevendinger")return "FV|"+(c.q.startsWith("Du har")?"liste":c.q.startsWith("Koreansk")?"ko":"no");
  if(q.startsWith("Treffpunkt for "))return c.cat+"|Treffpunkt for";
  if(q.startsWith("Grunnprinsipp – koreansk for"))return "Grunnprinsipp-ko";
  for(const p of PNAMES)q=q.split(p).join("#");
@@ -841,7 +899,7 @@ const PD={"Chon-Ji":"cross","Dan-Gun":"H","Do-San":"stairs","Won-Hyo":"H","Yul-G
 const dsvg=(k,s=22)=>`<svg class="dg" viewBox="0 0 24 24" width="${s}" height="${s}" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${DG[k]}</svg>`;
 function diagFromText(t){if(/vinkel under/.test(t))return"yoosin";if(/opp fra midten/.test(t))return"choongjang";if(/^Fjell/.test(t))return"juche";if(/^Kors/.test(t))return"cross";if(/^Trappetrinn/.test(t))return"stairs";if(/liten V/.test(t))return"HV";if(/læreren/.test(t))return"Ht";if(/^Liggende H/.test(t))return"H";if(/tapte territorier/.test(t))return"tree";if(/^Vannrett/.test(t))return"hline";if(/^Loddrett/.test(t))return"vline";return null}
 function patternOf(c){if(/– diagram\?$/.test(c.q))return null;const f=Object.keys(PD).filter(p=>c.q.includes(p));return f.length===1?f[0]:null}
-const CATCOL={"Ordliste":"#2f5da8","Stillinger":"#2e7d46","Klarstillinger":"#2e7d46","Punch":"#d6402a","Blokker":"#2f5da8","Slag":"#d6402a","Støt":"#d6402a","Spark":"#b8860b","Spark i mønstre":"#b8860b","Treffpunkter":"#2e7d46","Mønster":"#6b3fa0","Mønsterhistorie":"#6b3fa0","Motions":"#6b3fa0","Mønsteranalyse":"#6b3fa0","TKD-historie":"#444","Etikk og organisasjon":"#444","Tverrkutt":"#d6402a","Graderingspensum":"#444"};
+const CATCOL={"Ordliste":"#2f5da8","Stillinger":"#2e7d46","Klarstillinger":"#2e7d46","Punch":"#d6402a","Blokker":"#2f5da8","Slag":"#d6402a","Støt":"#d6402a","Spark":"#b8860b","Spark i mønstre":"#b8860b","Treffpunkter":"#2e7d46","Mønster":"#6b3fa0","Mønsterhistorie":"#6b3fa0","Motions":"#6b3fa0","Mønsteranalyse":"#6b3fa0","TKD-historie":"#444","Etikk og organisasjon":"#444","Tverrkutt":"#d6402a","Graderingspensum":"#444","Firevendinger":"#b8860b"};
 
 // ---------- STATISTIKK ----------
 function poolFor(lv,scope){return C.slice(0,DYN0).filter(c=>(scope==="only"?c.lv===lv:c.lv>=lv)&&st.cats.includes(c.cat))}
@@ -1026,7 +1084,7 @@ document.addEventListener("touchend",e=>{if(tx===null||view!=="play"||!cur||!cur
 renderHome();
 
 // ---------- AUTO-OPPDATERING ----------
-const APP_VERSION="20261115-122115";
+const APP_VERSION="20261115-160351";
 async function checkUpdate(){try{const r=await fetch("version.json?t="+Date.now(),{cache:"no-store"});if(!r.ok)return;const v=(await r.json()).v;if(!v||v===APP_VERSION)return;const k="tkd_reload_"+v;try{if(sessionStorage.getItem(k))return;sessionStorage.setItem(k,"1")}catch(e){}location.replace(location.pathname+"?v="+encodeURIComponent(v)+location.hash)}catch(e){}}
 checkUpdate();
 document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible"&&view!=="play")checkUpdate()});
