@@ -764,6 +764,9 @@ const inScope=(cl,lv,scope)=>scope==="only"?(lv>0?cl===lv:(cl<=danBase(lv)&&cl>=
 const on=c=>inScope(c.lv,st.lv,st.scope);
 const cats=[...new Set(C.map(c=>c.cat))];
 if(!st.cats)st.cats=cats.slice();
+// Nye temaer legges automatisk til hos eksisterende brukere
+{const OLD=["Ordliste","Stillinger","Klarstillinger","Punch","Blokker","Slag","Støt","Spark","Spark i mønstre","Treffpunkter","Mønster","Mønsterhistorie","Motions","Mønsteranalyse","TKD-historie","Etikk og organisasjon"];
+ const seen=st.seen||OLD;for(const k of cats)if(!seen.includes(k)&&!st.cats.includes(k))st.cats.push(k);st.seen=cats.slice();save();}
 const esc=s=>String(s).replace(/[&<>"]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[m]));
 function qa(c){if(c.term)return st.rev?{q:"Hva betyr: "+c.a+"?",a:c.q}:{q:"Koreansk for: "+c.q,a:c.a};return{q:c.q,a:c.a}}
 function core(a){return a.split("\n")[0].split(" – ")[0].trim()}
@@ -1005,7 +1008,7 @@ document.addEventListener("touchend",e=>{if(tx===null||view!=="play"||!cur||!cur
 renderHome();
 
 // ---------- AUTO-OPPDATERING ----------
-const APP_VERSION="20261115-113941";
+const APP_VERSION="20261115-114133";
 async function checkUpdate(){try{const r=await fetch("version.json?t="+Date.now(),{cache:"no-store"});if(!r.ok)return;const v=(await r.json()).v;if(!v||v===APP_VERSION)return;const k="tkd_reload_"+v;try{if(sessionStorage.getItem(k))return;sessionStorage.setItem(k,"1")}catch(e){}location.replace(location.pathname+"?v="+encodeURIComponent(v)+location.hash)}catch(e){}}
 checkUpdate();
 document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible"&&view!=="play")checkUpdate()});
