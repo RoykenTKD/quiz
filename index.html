@@ -399,7 +399,10 @@ for(const [p,k,a] of SH) add("Spark i mønstre","Høyde: "+k+" i "+p+"?",a);
 // TREFFPUNKTER
 const TP=[["Knyttneve","Ap joomuk","De to fremste knokene"],["Tåball","Ap kumchi","Tåballen"],["Innsiden av underarmen","An palmok","Innsiden av underarmen"],["Knivfot","Balkal","Utsiden av foten"],["Knivhånd","Sonkal","Siden av hånden"],["Bak hæl","Dwichook","Baksiden av hælen"],["Håndflate","Sonbadak","Håndflaten"],["Albue","Palkup","Albuepunktet"],["Halvsirkelhånd","Bandal son","Mellom tommel og pekefinger"],["Kne","Moorup","Fronten av kneet"],["Midtre knoke","Joongji","Innerste ledd på langfingeren"],["Fotsåle","Balbadak","Fotsålen"]];
 const TPL=[10, 10, 10, 10, 10, 6, 5, 5, 4, 3, 0, 0];
-TP.forEach(([no,ko,d],i)=>{add("Treffpunkter","Treffpunkt «"+no+"» – koreansk og hvor?",ko+" – "+d);C.at(-1).lv=TPL[i]});
+// Spør kun om koreansk navn (alternativene er bare koreanske navn), og eget spørsmål om hvor man treffer der det gir ny kunnskap
+const TPHVA=["Knyttneve","Knivfot","Knivhånd","Bak hæl","Halvsirkelhånd","Kne","Midtre knoke","Albue"];
+TP.forEach(([no,ko,d],i)=>{add("Treffpunkter","Koreansk for treffpunktet «"+no+"»?",ko,d);C.at(-1).lv=TPL[i];
+ if(TPHVA.includes(no)){add("Treffpunkter","Hvilken del treffer du med «"+ko+"»?",d,no);C.at(-1).lv=TPL[i];}});
 
 // MØNSTER – fakta
 const P=[
@@ -800,8 +803,24 @@ function familyKey(c){
  if(/ – klarstilling \(junbi\)\?$/.test(c.q))return "klar-navn";
  return null;
 }
+// Ordliste-typer: feilalternativer hentes fra samme type (tall med tall, blokker med blokker osv.)
+function termType(c){
+ const k=c.a.toLowerCase().trim(),n=c.q.toLowerCase();
+ if(["hana","doll","set","net","dasot","yosot","ilgop","yodul","ahop","yol"].includes(k))return "tall";
+ if(/sabumnim|sahyunim|sasungnim/.test(k))return "titler";
+ if(["charyot","kyong ye","jun bi","shi jak","kihap","parou","swiyo","haes an"].includes(k))return "kommando";
+ if(/matsogi|ho sin sul/.test(k))return "sparring";
+ if(/makgi$/.test(k))return "blokk";
+ if(/chagi$/.test(k))return "spark";
+ if(/(jirugi|taerigi|tulgi|ghutgi|japgi)$/.test(k)||/^(punch|slag|støt|tverrkutt|grabb)/.test(n))return "angrep";
+ if(/sogi$/.test(k))return "stilling";
+ if(/(son|joomuk|palkup|palmok|^bal|balkal|sonkut|dwichook|mori|moorup|joongji|songarak|sondung)/.test(k))return "kropp";
+ if(["narani","najunde","kaunde","nopunde","baro","ap","yop","an","bakkat","bandae","bakkuro","anuro","naeryo","olligi","chookyo","sang","sun","twimyo","saju","yobap","yopdwi","soopyong","mikulgi","yonsok","pihamyo","twigy","ollyo"].includes(k))return "retning";
+ return "annet";
+}
 function groupKey(c){
- if(c.term)return "term";
+ if(c.term)return "term|"+termType(c);
+ if(c.cat==="Treffpunkter")return c.q.startsWith("Koreansk")?"TP|ko":"TP|hva";
  if(c.cat==="Klarstillinger"&&!/^(Koreansk navn|Hva er):/.test(c.q))return c.q.startsWith("Hvilken")?"Klar-hvilken":"Klarstillinger";
  let q=c.q;
  if(c.cat==="Graderingspensum")return "Graderingspensum";
@@ -1115,7 +1134,7 @@ document.addEventListener("touchend",e=>{if(tx===null||view!=="play"||!cur||!cur
 renderHome();
 
 // ---------- AUTO-OPPDATERING ----------
-const APP_VERSION="20261116-095106";
+const APP_VERSION="20261116-173124";
 async function checkUpdate(){try{const r=await fetch("version.json?t="+Date.now(),{cache:"no-store"});if(!r.ok)return;const v=(await r.json()).v;if(!v||v===APP_VERSION)return;const k="tkd_reload_"+v;try{if(sessionStorage.getItem(k))return;sessionStorage.setItem(k,"1")}catch(e){}location.replace(location.pathname+"?v="+encodeURIComponent(v)+location.hash)}catch(e){}}
 checkUpdate();
 document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible"&&view!=="play")checkUpdate()});
