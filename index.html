@@ -184,6 +184,7 @@ h2{font-size:18px;margin:0 0 10px;font-weight:700}
 .warn{margin-top:12px;padding:10px 12px;border-radius:12px;background:var(--soft);font-size:13px;color:var(--mute)}
 
 </style>
+<script data-goatcounter="https://roykentkd.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
 </head>
 <body>
 <div id="app"></div>
@@ -986,8 +987,9 @@ function renderHome(){
  const ib=document.getElementById("inst");if(ib)ib.onclick=openInstall;
 }
 
+function gcEv(n,t){try{if(window.goatcounter&&goatcounter.count)goatcounter.count({path:n,title:t,event:true})}catch(e){}}
 function startSession(list){
- dynCards();
+ dynCards();gcEv("okt-start","Startet økt");
  let cards;
  if(list)cards=list;
  else{
@@ -1058,7 +1060,7 @@ function answer(ok,extra){
 function next(){sess.i++;if(sess.i>=sess.cards.length)showSummary();else newCard();window.scrollTo({top:0})}
 
 function showSummary(){
- view="summary";
+ view="summary";gcEv("okt-ferdig","Fullførte økt");
  const done=sess.i+(cur&&cur.ans&&sess.i<sess.cards.length?1:0),n=Math.max(done,1);
  const pct=Math.round(100*sess.right/n);
  const byCat={};sess.miss.forEach(c=>byCat[c.cat]=(byCat[c.cat]||0)+1);
@@ -1134,7 +1136,7 @@ document.addEventListener("touchend",e=>{if(tx===null||view!=="play"||!cur||!cur
 renderHome();
 
 // ---------- AUTO-OPPDATERING ----------
-const APP_VERSION="20261116-173124";
+const APP_VERSION="20261116-190426";
 async function checkUpdate(){try{const r=await fetch("version.json?t="+Date.now(),{cache:"no-store"});if(!r.ok)return;const v=(await r.json()).v;if(!v||v===APP_VERSION)return;const k="tkd_reload_"+v;try{if(sessionStorage.getItem(k))return;sessionStorage.setItem(k,"1")}catch(e){}location.replace(location.pathname+"?v="+encodeURIComponent(v)+location.hash)}catch(e){}}
 checkUpdate();
 document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible"&&view!=="play")checkUpdate()});
