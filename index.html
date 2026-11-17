@@ -407,7 +407,7 @@ TP.forEach(([no,ko,d],i)=>{add("Treffpunkter","Koreansk for treffpunktet «"+no+
 
 // MØNSTER – fakta
 const P=[
-["Chon-Ji",19,"Kors","Narani junbi sogi","«Himmelen og jorden» – tolket som verdens/menneskets skapelse; derfor første mønster. To like deler: himmelen og jorden.","Ingen kjent betydning av antallet."],
+["Chon-Ji",19,"Kors","Narani junbi sogi","«Himmelen og jorden» – tolket som verdens/menneskets skapelse; derfor første mønster. To like deler: himmelen og jorden.","To like deler: himmelen og jorden. Antallet har ingen kjent betydning."],
 ["Dan-Gun",21,"Liggende H","Narani junbi sogi","Den hellige Dan-Gun, legendarisk grunnlegger av Korea 2333 f.Kr. Koreansk treenighet: Skaperen, Skaperens sønn, Dan-Gun. Tiger og bjørn i hule i 21 dager – bjørnen holdt ut, ble kvinne og fødte Dan-Gun. Konge over «de ni stammer».","21 = dagene i hulen. Avsluttes med venstrehånds angrep: Dan-Gun satte ikke grenser rundt landet."],
 ["Do-San",24,"Trappetrinn","Narani junbi sogi","Pseudonym for patrioten Ahn Ch'ang Ho (1875–1938). Viet livet til utdannelse og frigjøringsbevegelsen. Emigrerte til USA 1903. Eksilregjering i Shanghai 1919 med Syngman Rhee og Kim Ku. Historiekomité 1922. Første gang arrestert 1909.","24 bevegelser = 24 timer i døgnet = hele livet hans. Eneste mønster med trappetrinn som diagram."],
 ["Won-Hyo",28,"Liggende H","Moa junbi sogi A","Munk som introduserte buddhismen til Silla-dynastiet år 686. Navnet betyr «daggry». Forsøkte å forene de 5 sektene. Pure Land-sekten (661): frelse ved bønn – gjorde buddhismen tilgjengelig for folk flest.","Antallet ikke forklart av Gen. Choi (teorier: 28 bokstaver i alfabet / året 528)."],
@@ -883,7 +883,8 @@ function makeOpts(c){
  if(c.wrong&&!(c.term&&st.rev)){const w=pick(c.wrong,3).concat([a]);return pick(w,w.length)}
  const qn=norm(q),fam=c.term?null:familyKey(c);
  // aldri et alternativ som står i selve spørsmålet, eller som er likt fasiten
- const ok=x=>x!==a&&core(x)!==core(a)&&!(norm(core(x)).length>3&&qn.includes(norm(core(x))));
+ const NK=/ingen kjent betydning/i,nka=NK.test(a);
+ const ok=x=>x!==a&&core(x)!==core(a)&&!(nka&&NK.test(x))&&!(norm(core(x)).length>3&&qn.includes(norm(core(x))));
  const P=f=>[...new Set(C.filter(x=>x.id!==c.id&&f(x)).map(x=>qa(x).a))].filter(ok);
  let pool=P(x=>on(x)&&x.g===c.g);
  if(pool.length<3)pool=[...new Set(pool.concat(P(x=>x.g===c.g)))];
@@ -1136,7 +1137,7 @@ document.addEventListener("touchend",e=>{if(tx===null||view!=="play"||!cur||!cur
 renderHome();
 
 // ---------- AUTO-OPPDATERING ----------
-const APP_VERSION="20261116-190426";
+const APP_VERSION="20261117-160652";
 async function checkUpdate(){try{const r=await fetch("version.json?t="+Date.now(),{cache:"no-store"});if(!r.ok)return;const v=(await r.json()).v;if(!v||v===APP_VERSION)return;const k="tkd_reload_"+v;try{if(sessionStorage.getItem(k))return;sessionStorage.setItem(k,"1")}catch(e){}location.replace(location.pathname+"?v="+encodeURIComponent(v)+location.hash)}catch(e){}}
 checkUpdate();
 document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible"&&view!=="play")checkUpdate()});
